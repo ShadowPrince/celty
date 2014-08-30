@@ -5,8 +5,8 @@ INFO = 2
 
 
 def _stringlevel(lvl):
-    return {1: "ERROR",
-            2: "INFO",}.get(lvl, lvl)
+    return {1: "e",
+            2: "i",}.get(lvl, lvl)
 
 
 def log(level, msg, *args, **kwargs):
