@@ -17,3 +17,16 @@ def pack(skip_grab_check=False, *args):
         return wrapper
 
     return decorator
+
+def x():
+    import elements as els
+    import check
+    button = els.button("x", "c", ("a", ))
+    data, err = check.check(button, 
+        {"a": [
+            lambda x: int(x, 16) and None,
+        ]},
+        {"a": [lambda x: int(x, 16) ]},
+        {"a": "10"})
+
+    print(data, err)

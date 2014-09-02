@@ -18,8 +18,7 @@ def auth(c):
     c.history = []
 
 
-@api.command()
-@api.ui()
+@api.ui(main_menu="shell")
 @helmet.pack()
 def main(c, sh=None):
     if sh:

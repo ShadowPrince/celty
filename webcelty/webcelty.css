@@ -33,8 +33,15 @@ div.state {
     border: 3px solid #aaa;
 }
 
-div.block pre {
-    color: #eee;
+div.logo {
+    float: left;
+    color: white;
+    font-size: 2em;
+}
+
+.logo .version {
+    color: grey;
+    font-size: 0.4em;
 }
 
 #widgets {
@@ -42,7 +49,8 @@ div.block pre {
     width: 45%;
 }
 
-#widgets pre {
+#widgets .block pre {
+    color: #eee;
     word-wrap: break-word;
     margin: 0;
 }

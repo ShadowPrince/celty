@@ -18,3 +18,9 @@ def button(caption, command, grab=(), name=None):
             "caption": caption,
             "command": command,
             "grab": grab, }
+
+
+def progressbar(name, percentage):
+    return {"type": "progressbar",
+            "name": name,
+            "percentage": percentage, }

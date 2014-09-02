@@ -126,7 +126,7 @@ webcelty.prototype = {
 
 
 $(document).ready(function () {
-    c = new webcelty("http://localhost:23589", "1");
+    c = new webcelty("http://127.0.0.1:23589", "1");
     c.ready = function () {
         this.subscribe("celty:widgets");
         this.command("celty:main");

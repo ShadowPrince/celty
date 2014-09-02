@@ -36,11 +36,11 @@ def widgets(c):
 @api.ui()
 @helmet.pack()
 def main(c):
-    return ([elements.label(*["celty main menu", "pick something:"]), ],
-            [elements.button("system config", "system:configure"), ],
-            [elements.button("sh", "shell:main"), ],)
+    menu = [[elements.button(*x)] for x in celty._main_menu]
+    return [[elements.label(*["celty main menu", "pick something:"]), ], ] + menu
 
 
 @api.widget(timeout=1)
 def celty_status(c):
-    return ["celty 0.1", "i'm okay!", "connected: {}".format(len(celty.get_connected()))]
+    return ["celty {}, clients: {}".format("0.1", len(celty.get_connected())),
+            "commands: {}, widgets: {}".format(len(celty._commands), len(celty._widgets)), ]

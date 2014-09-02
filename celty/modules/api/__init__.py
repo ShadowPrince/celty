@@ -2,7 +2,7 @@ from functools import wraps
 import celty
 
 
-def command(name=None, ns=None):
+def command(name=None, ns=None, main_menu=False):
     def cb(x):
         if not name:
             _name = x.__name__
@@ -14,7 +14,7 @@ def command(name=None, ns=None):
         else:
             _ns = ns
 
-        celty.register_command(_name, x, namespace=_ns)
+        celty.register_command(_name, x, namespace=_ns, main_menu=main_menu)
         return x
 
     return cb
@@ -29,9 +29,9 @@ def widget(*args, **kwargs):
     return cb
 
 
-def ui(_name=None, ns=None):
+def ui(_name=None, ns=None, main_menu=False):
     def decorator(fn):
-        @command(_name, ns)
+        @command(_name, ns, main_menu)
         @wraps(fn)
         def wrapper(*args, **kwargs):
             return {"type": "ui",

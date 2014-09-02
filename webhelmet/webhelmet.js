@@ -18,11 +18,12 @@ webhelmet = {
         for (var row in markup) {
             var id = "row_" + row;
             var c = "<table><tr>";
+            var c = "";
 
             for (var el in markup[row]) {
                 var el = markup[row][el];
 
-                c += "<td>";
+                //c += "<td>";
                 switch (el.type) {
                     case "label": 
                         c += webhelmet._label(el.text); 
@@ -34,10 +35,10 @@ webhelmet = {
                         c += webhelmet._button(el.caption, el.command, el.grab);
                         break;
                 }
-                c += "</td>";
+                //c += "</td>";
             }
 
-            c += "</tr></table>";
+            //c += "</tr></table>";
             $to.append("<div class=\"helmet_row\" id=\"" + id + "\">"+c+"</div>");
         }
 

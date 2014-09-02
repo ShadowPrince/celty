@@ -3,6 +3,7 @@ import time
 
 
 _commands = {}
+_main_menu = []
 _keywords = {}
 _widgets = {}
 _modules = {}
@@ -35,8 +36,11 @@ class Client:
         del self.subscriptions[cmd]
 
 
-def register_command(name, fn, namespace=None):
-    _commands["{}{}".format(namespace+":" if namespace else "", name)] = fn
+def register_command(name, fn, namespace=None, main_menu=False):
+    fullname = "{}{}".format(namespace+":" if namespace else "", name)
+    _commands[fullname] = fn
+    if main_menu:
+        _main_menu.append([main_menu, fullname])
 
 
 def register_widget(fn, name=None, timeout=1000, *args):
@@ -85,8 +89,7 @@ def updated_widgets(c):
 def call(cl, name, *args, **kwargs):
     try:
         return _commands[name](cl, *args, **kwargs)
-    except TypeError as ex:
-        raise CommandWrongUsageError(str(ex))
+    #@TODO: except invalid arguments number TypeError 
     except KeyError:
         raise CommandNotRegisteredError(name)
 
@@ -107,6 +110,10 @@ def auth(protocol, token):
         return cl
     else:
         return None
+
+
+def reset_widget_time(c, name):
+    c.widgets[name]["last_time"] = 0
 
 
 def subscribe(c, *args, **kwargs):

@@ -38,7 +38,7 @@ class CeltyClient(JSONReceiver):
                 out = celty.call(self.client, data["command"], **args)
         except celty.CommandNotRegisteredError:
             out = {"type": "error",
-                   "error": "command not registered", }
+                   "error": "command {} not registered".format(data["command"]), }
         except celty.CommandWrongUsageError as ex:
             out = {"type": "error",
                    "error": str(ex), }

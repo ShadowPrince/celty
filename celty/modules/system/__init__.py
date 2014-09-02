@@ -1,8 +1,13 @@
 import helmet
+from helmet import check
 from helmet import elements as els
+
 from celty.modules import api
 
 from subprocess import check_output
+
+
+FIELDS="pcpu,pmem,pid,user,args".split(",")
 
 
 def auth(c):
@@ -11,30 +16,50 @@ def auth(c):
     c.sort = "pcpu"
 
 
-@api.command(ns="system")
-@api.ui()
+@api.ui(main_menu="configure system module")
 @helmet.pack()
 def configure(c, **data):
-    if not data:
+    submit = els.button("save", "system:configure", ("lines", "fields", "sort"))
+
+    cdata, err = check.check(
+            submit, 
+            data,
+            validators={
+                "fields": [
+                    check.not_empty(),
+                    lambda x: None if [True for a in x.split(",")] == [x in FIELDS for x in x.split(",")] else "invalid value!", 
+                    ],
+                "lines": check.integer(),
+                "sort": check.value_in(FIELDS),
+                },
+            translators={
+                "lines": [check.to_integer(), lambda x: x+1, ]
+                }, )
+
+    if not err:
+        c.lines = cdata["lines"]
+        c.fields = cdata["fields"]
+        c.sort = cdata["sort"]
+    else:
         data = {"lines": c.lines,
                 "fields": c.fields,
                 "sort": c.sort, }
-        result = ""
-    else:
-        c.lines = int(data["lines"])
-        c.fields = data["fields"]
-        c.sort = data["sort"]
-        result = "success"
 
-    return ([els.label("lines to show"), els.input("lines", data["lines"])],
+    return ([els.label(*check.errorlines(err)), ],
+            [els.label("lines to show"), els.input("lines", data["lines"])],
             [els.label("fields"), els.input("fields", data["fields"])],
             [els.label("sort (one of fields)"), els.input("sort", data["sort"])],
-            [els.button("save", "system:configure", ("lines", "fields", "sort")), els.label(result)], )
+            [submit, ], )
 
 
 @api.widget()
 def uptime(c):
-    return [check_output("uptime").decode("utf-8").strip()]
+    return [(check_output("uptime").decode("utf-8").strip()), ]
+
+
+@api.command()
+def refresh_ps(c):
+    celty.reset_widget_time(c, "system:ps")
 
 
 @api.widget(timeout=3)
