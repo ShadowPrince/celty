@@ -14,28 +14,36 @@ html {
 
 div.wrapper {
     margin: auto;
-    width: 960px;
+    max-width: 960px;
 }
 
 div.block {
-    border: 3px solid white;
-    margin-bottom: 1em;
+    border: 3px solid #fff977;
+    border-radius: 3px;
+    margin-bottom: 10px;
     color: grey;
+    background: #fff977;
 }
 
 div.block .key {
-    background: white;
-    color: black;
+    background: #fff977;
+    color: #2c4663;
 }
 
 div.state {
     float: right;
-    border: 3px solid #aaa;
+    text-align: right;
+}
+
+.state #connection {
+    border: 3px solid #111;
+    border-radius: 3px;
+    float: right;
 }
 
 div.logo {
     float: left;
-    color: white;
+    color: #fff977;
     font-size: 2em;
 }
 
@@ -46,26 +54,43 @@ div.logo {
 
 #widgets {
     float: left;
-    width: 45%;
+    width: 470px;
 }
+
 
 #widgets .block pre {
     color: #eee;
     word-wrap: break-word;
     margin: 0;
+    background: #070c08;
+    border: 1px solid #070c08;
+    border-radius: 3px;
 }
 
 #ui {
-    width: 50%;
-    border: solid;
-    float: right;
+    float: left;
+    margin-left: 10px;
+    width: 470px;
+    border: solid #fff977;
     color: #eee;
+    background: #fff977;
+    border-radius: 3px;
 }
 
 #ui .title {
-    color: black;
-    background: white;
+    color: #2c4663;
+    background: #fff977;
     text-align: right;
+}
+
+#ui #back_command {
+    float: left;
+}
+
+#helmet_render {
+    border: 1px solid #070c08;
+    border-radius: 3px;
+    background: #070c08;
 }
 
 #helmet_render span {

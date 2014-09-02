@@ -3,6 +3,8 @@ var webcelty = function webcelty(url, token) {
     this.token = token;
     this.url = url;
 
+    $(".state #addr").html(url);
+
     this._register_handlers();
 
     var that = this;
@@ -17,7 +19,6 @@ webcelty.prototype = {
     _register_handlers: function () {
         var that = this;
         this.sock.onopen = function() {
-            that.show_state("opened", "yellow");
             that.auth_request(that.token);
         };
 
@@ -36,13 +37,17 @@ webcelty.prototype = {
 
     _send: function (data) {
         var json = JSON.stringify(data);
+
         this.sock.send(json+"\r\n");
     },
 
     _halt: function (e) {
         console.log("webcelty halt: " + e);
         this.sock.onclose = undefined;
+        this.sock.onmessage = undefined;
+        this.sock.onopen = undefined;
         this.sock.close();
+        this.sock = undefined;
     },
 
     _jsonlist: function (_list) {
@@ -58,16 +63,16 @@ webcelty.prototype = {
     show_state: function (message, color) {
         $("#connection").html(message);
         $("#connection").css("color", color);
+        $("#connection").css("border-color", color);
     },
 
     auth_request: function (token) {
-        this.show_state("auth", "yellow");
+        this.show_state("authenticating...", "yellow");
         this._send({token: token});
     },
 
     subscribe: function () {
         $("#subscriptions").append("<li id=\""+arguments[0]+"\">" + arguments[0] + "</li>");
-
 
         this._send({
             command: "celty:subscribe",
@@ -98,7 +103,7 @@ webcelty.prototype = {
                     this.show_state("connected", "green");
                     this.ready();
                 } else {
-                    this.show_state("auth error: " + r.error, "red");
+                    this.show_state("celty halted -> auth error: " + r.error, "red");
                     this._halt("auth error");
                 }
 
@@ -134,7 +139,7 @@ $(document).ready(function () {
 
 
     $("#back_command").click(function () {
-        $("#helmet_title").empty();
+        $("#helmet_title").html("&nbsp;");
     });
 
     $(".celty_command").click(function () {

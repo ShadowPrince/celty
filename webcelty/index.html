@@ -17,15 +17,18 @@
                 <span class="version">web</span><img src="helmet_30.png" />Celty
                 <span class="version">v 0.1</span>
             </div>
-            <div class="state"><span id="connection"></span></div>
+            <div class="state">
+                <div id="addr"></div>
+                <span id="connection">setting-up...</span><span id="ticker"></span>
+            </div>
         </div>
         <br />
         <div class="float-container">
             <div id="widgets"></div>
             <div id="ui">
                 <div class="title">
-                    <span id="helmet_title"></span> 
-                    <input type="button" value="back" id="back_command" class="celty_command" data-command="celty:main" />
+                    <span id="helmet_title">&nbsp;</span> 
+                    <div id="back_command" class="celty_command" data-command="celty:main">« back</div>
                 </div>
                 <div id="helmet_render">
                     Helmet rendering zone.
