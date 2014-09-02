@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>webhelmet</title>
+  <script src="jquery.min.js"></script>
+  <script src="webhelmet.js"></script>
+  <script>
+$(document).ready(function () {
+    webhelmet.renderJSON('[[{"type": "label", "text": "hey you!"}, {"type": "label", "text": "whats up?"}], [{"type": "input", "name": "text", "value": ""}, {"caption": "submit!", "type": "button", "command": "main_a", "grab": "text"}]]', $("#render"));
+    });
+  </script>
+  <link rel="stylesheet" href="helmet.css" />
+ </head>
+ <body>
+  <div id="render" class="helmet_render">
+
+  </div>
+ </body>
+</html>

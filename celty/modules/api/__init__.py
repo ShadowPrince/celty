@@ -1,3 +1,4 @@
+from functools import wraps
 import celty
 
 
@@ -21,3 +22,14 @@ def widget(*args, **kwargs):
         return x
 
     return cb
+
+
+def ui():
+    def decorator(fn):
+        @wraps(fn)
+        def wrapper(*args, **kwargs):
+            return {"type": "ui",
+                    "data": fn(*args, **kwargs)}
+
+        return wrapper
+    return decorator

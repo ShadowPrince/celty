@@ -6,6 +6,7 @@ _commands = {}
 _keywords = {}
 _widgets = {}
 _modules = {}
+_connections = []
 
 
 class ExitError(Exception):
@@ -22,15 +23,23 @@ class CommandWrongUsageError(Exception):
 
 
 class Client:
-    def __init__(self):
-        pass
+    def __init__(self, protocol):
+        self.widgets = dict([(n, {"last_time": 0}) for n in (x["name"] for x in _widgets.values())])
+        self.subscriptions = {}
+        self.proto = protocol
+    
+    def subscribe(self, cmd, *args, **kwargs):
+        self.subscriptions[cmd] = (args, kwargs, )
+
+    def unsubscribe(self, cmd):
+        del self.subscriptions[cmd]
 
 
 def register_command(name, fn, namespace=None):
     _commands["{}{}".format(namespace+":" if namespace else "", name)] = fn
 
 
-def register_widget(fn, *args, name=None, timeout=1000):
+def register_widget(fn, name=None, timeout=1000, *args):
     _widgets[fn] = {
         "name": fn.__name__ if not name else name,
         "priority": args[0] if len(args) > 0 else 0,
@@ -61,11 +70,20 @@ def setup_module(module):
     _modules[module.name] = module
 
 
-def widgets(c):
+def updated_widgets(c):
     for fn, opts in _widgets.items():
-        if opts["last_time"] + opts["timeout"] < time.time():
-            _widgets[fn]["last_time"] = time.time()
+        try:
+            copts = c.widgets[opts["name"]]
+        except KeyError:
+            continue
+
+        if copts["last_time"] + opts["timeout"] < time.time():
+            c.widgets[opts["name"]]["last_time"] = time.time()
             yield opts["name"], fn(c)
+
+
+def available_commands(c):
+    return _commands.keys()
 
 
 def call(cl, name, *args, **kwargs):
@@ -77,9 +95,15 @@ def call(cl, name, *args, **kwargs):
         raise CommandNotRegisteredError(name)
 
 
-def auth(token):
+def process_subscriptions():
+    for c in _connections:
+        for sub, (args, kwargs) in c.subscriptions.items():
+            c.proto.send_subscription(call(c, sub, *args, **kwargs))
+
+
+def auth(protocol, token):
     if token == "1":
-        cl = Client()
+        cl = Client(protocol)
         for m in _modules.values():
             if hasattr(m, "auth"):
                 m.auth(cl)
@@ -87,3 +111,23 @@ def auth(token):
         return cl
     else:
         return None
+
+
+def subscribe(c, *args, **kwargs):
+    c.subscribe(*args, **kwargs)
+
+
+def unsubscribe(c, cmd):
+    c.unsubscribe(cmd)
+
+
+def connection_made(protocol):
+    _connections.append(protocol.client)
+
+
+def connection_lost(protocol):
+    _connections.remove(protocol.client)
+
+
+def get_connected():
+    return _connections

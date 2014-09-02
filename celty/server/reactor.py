@@ -8,28 +8,43 @@ class CeltyClient(JSONReceiver):
     def __init__(self):
         self.mode = self.auth
 
+    def connectionMade(self):
+        pass
+
+    def connectionLost(self, reason):
+        celty.connection_lost(self)
+
     def jsonReceived(self, data):
         self.sendJson(self.mode(data))
 
     def auth(self, data):
-        self.client = celty.auth(data["token"])
+        self.client = celty.auth(self, data["token"])
         if self.client:
             self.mode = self.command
-            return "success"
+            celty.connection_made(self)
+            return {"type": "auth",
+                    "result": "success"}
         else:
-            return "failed"
+            return {"type": "auth",
+                    "result": "error",
+                    "error": "token check failed", }
 
     def command(self, data):
         try:
             out = celty.call(self.client, data["command"], *data.get("args", []))
         except celty.CommandNotRegisteredError:
-            out = "404"
+            out = {"type": "error",
+                   "error": "command not registered", }
         except celty.CommandWrongUsageError as ex:
-            out = str(ex)
+            out = {"type": "error",
+                   "error": str(ex), }
 
         return out
 
+    def send_subscription(self, data):
+        self.sendJson(data)
 
-class CertyFactory(Factory):
+
+class CeltyFactory(Factory):
     def buildProtocol(self, addr):
         return CeltyClient()

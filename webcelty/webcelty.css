@@ -1,0 +1,45 @@
+html {
+    color: #333;
+    background: black;
+}
+
+.float-container {
+    width: 100%;
+    overflow: auto;
+}
+
+.celty_command {
+    color: white;
+    text-decoration: underline;
+}
+
+div.wrapper {
+    margin: auto;
+    width: 960px;
+}
+
+div.block {
+    border: 3px solid white;
+    margin-bottom: 1em;
+    color: grey;
+}
+
+div.state {
+    float: right;
+    border: 3px solid #aaa;
+}
+
+div div {
+    color: #eee;
+}
+
+#widgets {
+    float: left;
+    width: 45%;
+}
+
+#helmet_render {
+    width: 50%;
+    border: solid;
+    float: right;
+}

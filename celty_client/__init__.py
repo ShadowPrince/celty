@@ -11,9 +11,13 @@ def send(c, data):
 
 
 def dispatch(data):
-    if isinstance(data, dict):
-        for k, v in data.items():
+    if data["type"] == "auth":
+        print("auth: " + data["state"])
+    elif data["type"] == "widgets":
+        for k, v in data["data"].items():
             widgets[k] = v
+    elif data["type"] == "commands":
+        print(data)
 
 
 class WidgetsThread(Thread):
@@ -28,13 +32,15 @@ class WidgetsThread(Thread):
                 buffer = b""
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect(("127.0.0.1", 23589))
+client.connect(("127.0.0.1", 23590))
 
 th = WidgetsThread()
 th.s = client
 th.start()
 
+print("auth...")
 send(client, {"token": "1", })
+send(client, {"command": "help", })
 
 while 1:
     print()
