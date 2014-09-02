@@ -34,7 +34,7 @@ while True:
             print("============================== Changes made, restarting server... ========================")
             p = start()
 
-        time.sleep(1)
+        time.sleep(3)
     except:
         p.terminate()
         break

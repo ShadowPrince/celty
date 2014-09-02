@@ -84,7 +84,14 @@ div.logo {
 }
 
 #ui #back_command {
+    text-decoration: none;
     float: left;
+    background: #2c4663;
+    color: white;
+    border: 1px solid white;
+    padding: 2px;
+    border-radius: 3px;
+    margin-bottom: 2px;
 }
 
 #helmet_render {

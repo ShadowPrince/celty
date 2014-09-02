@@ -40,15 +40,15 @@ def configure(c, **data):
         c.lines = cdata["lines"]
         c.fields = cdata["fields"]
         c.sort = cdata["sort"]
-    else:
+    elif not data:
         data = {"lines": c.lines,
                 "fields": c.fields,
                 "sort": c.sort, }
 
     return ([els.label(*check.errorlines(err)), ],
-            [els.label("lines to show"), els.input("lines", data["lines"])],
-            [els.label("fields"), els.input("fields", data["fields"])],
-            [els.label("sort (one of fields)"), els.input("sort", data["sort"])],
+            [els.label("lines to show: "), els.input("lines", data["lines"])],
+            [els.label("fields: "), els.input("fields", data["fields"])],
+            [els.label("sort (one of fields): "), els.input("sort", data["sort"])],
             [submit, ], )
 
 
