@@ -5,7 +5,7 @@ from celty.modules import api
 import subprocess
 
 
-def sh(*args):
+def execute(*args):
     try:
         return subprocess.check_output(args).decode("utf-8")
     except IndexError:
@@ -14,14 +14,22 @@ def sh(*args):
         return str(e)
 
 
+def auth(c):
+    c.history = []
+
+
 @api.command()
 @api.ui()
 @helmet.pack()
-def sh_main(c, line=None):
-    if line:
-        out = sh(*line.split())
+def main(c, sh=None):
+    if sh:
+        out = execute(*sh.split())
     else:
         out = ""
 
-    return ([els.label(out)],
-            [els.input("sh"), els.button("exec", "sh_main", ("sh", )), els.button("back", "main") ])
+    c.history.append("$ " + str(sh))
+    c.history += out.splitlines()
+    out = c.history[-50:]
+
+    return ([els.label(*out)],
+            [els.input("sh"), els.button("exec", "shell:main", ("sh", )), ])

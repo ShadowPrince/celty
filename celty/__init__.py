@@ -27,7 +27,7 @@ class Client:
         self.widgets = dict([(n, {"last_time": 0}) for n in (x["name"] for x in _widgets.values())])
         self.subscriptions = {}
         self.proto = protocol
-    
+
     def subscribe(self, cmd, *args, **kwargs):
         self.subscriptions[cmd] = (args, kwargs, )
 
@@ -80,10 +80,6 @@ def updated_widgets(c):
         if copts["last_time"] + opts["timeout"] < time.time():
             c.widgets[opts["name"]]["last_time"] = time.time()
             yield opts["name"], fn(c)
-
-
-def available_commands(c):
-    return _commands.keys()
 
 
 def call(cl, name, *args, **kwargs):

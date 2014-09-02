@@ -2,14 +2,19 @@ from functools import wraps
 import celty
 
 
-def command(_name=None, ns=None):
+def command(name=None, ns=None):
     def cb(x):
-        if not _name:
-            name = x.__name__
+        if not name:
+            _name = x.__name__
         else:
-            name = _name
+            _name = name
 
-        celty.register_command(name, x, namespace=ns)
+        if not ns:
+            _ns = x.__module__.split(".")[-1]
+        else:
+            _ns = ns
+
+        celty.register_command(_name, x, namespace=_ns)
         return x
 
     return cb
@@ -24,8 +29,9 @@ def widget(*args, **kwargs):
     return cb
 
 
-def ui():
+def ui(_name=None, ns=None):
     def decorator(fn):
+        @command(_name, ns)
         @wraps(fn)
         def wrapper(*args, **kwargs):
             return {"type": "ui",

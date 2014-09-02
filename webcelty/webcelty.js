@@ -1,28 +1,11 @@
-function wait(pred) {
-    function check() {
-        if (!pred())
-            setTimeout(check, 50);
-    }
+var webcelty = function webcelty(url, token) {
+    this.sock = new SockJS(url);
+    this.token = token;
+    this.url = url;
 
-    check();
-}
+    this._register_handlers();
 
-var webcelty = function webcelty(sock, token) {
-    this.sock = sock;
-    that = this;
-
-    sock.onopen = function() {
-        that.auth_request(sock, token);
-    };
-
-    sock.onmessage = function(e) {
-        that.dispatch($.parseJSON(e.data));
-    };
-
-    sock.onclose = function() {
-        that.show_state("not connected", "red");
-    };
-
+    var that = this;
     webhelmet.submit = function (data) {
         that.command(data.command, data.args);
     };
@@ -31,11 +14,25 @@ var webcelty = function webcelty(sock, token) {
 webcelty.prototype = {
     ready: function () {},
 
-    show_state: function (message, color) {
-        $("#connection").html(message);
-        $("#connection").css("color", color);
-    },
+    _register_handlers: function () {
+        var that = this;
+        this.sock.onopen = function() {
+            that.show_state("opened", "yellow");
+            that.auth_request(that.token);
+        };
 
+        this.sock.onmessage = function(e) {
+            that.dispatch($.parseJSON(e.data));
+        };
+
+        this.sock.onclose = function() {
+            that.show_state("not connected", "red");
+            setTimeout(function () {
+                that.sock = new SockJS(that.url);
+                that._register_handlers();
+            }, 1000);
+        };
+    },
 
     _send: function (data) {
         var json = JSON.stringify(data);
@@ -58,7 +55,12 @@ webcelty.prototype = {
         return list;
     },
 
-    auth_request: function (sock, token) {
+    show_state: function (message, color) {
+        $("#connection").html(message);
+        $("#connection").css("color", color);
+    },
+
+    auth_request: function (token) {
         this.show_state("auth", "yellow");
         this._send({token: token});
     },
@@ -68,7 +70,7 @@ webcelty.prototype = {
 
 
         this._send({
-            command: "subscribe",
+            command: "celty:subscribe",
             args: this._jsonlist(arguments),
         });
     },
@@ -77,7 +79,7 @@ webcelty.prototype = {
         $("#subscriptions #" + arguments[0]).remove();
 
         this._send({
-            command: "unsubscribe",
+            command: "celty:unsubscribe",
             args: [arguments[0]],
         });
     },
@@ -85,7 +87,7 @@ webcelty.prototype = {
     command: function (cmd, args) {
         this._send({
             command: cmd,
-            args: this._jsonlist(args), 
+            args: args,
         });
     },
 
@@ -103,11 +105,11 @@ webcelty.prototype = {
                 break;
             case "widgets":
                 for (var key in r.data) {
-                    text = r.data[key].join("<br />");
+                    text = r.data[key].join("\n");
                     if ($("#" + key).length) {
                         $("#" + key).html(text);
                     } else {
-                        $("#widgets").append('<div class="block">'+key+':<div id="' + key + '">'+text+'</div></div>');
+                        $("#widgets").append('<div class="block"><div class="key">'+key+':</div><pre id="' + key + '">'+text+'</pre></div>');
                     }
                 }
                 break;
@@ -124,17 +126,25 @@ webcelty.prototype = {
 
 
 $(document).ready(function () {
-    c = new webcelty(new SockJS("http://localhost:23589"), "1");
+    c = new webcelty("http://localhost:23589", "1");
     c.ready = function () {
-        this.subscribe("widgets");
-        this.command("main");
+        this.subscribe("celty:widgets");
+        this.command("celty:main");
     };
 
 
+    $("#back_command").click(function () {
+        $("#helmet_title").empty();
+    });
+
     $(".celty_command").click(function () {
+        args = $(this).attr("data-args");
+        if (args != undefined)
+            args = args.split(",");
+
         c._send({
             command: $(this).attr("data-command"),
-            args: $(this).attr("data-args").split(","), 
+            args: args,
         });
     });
 });

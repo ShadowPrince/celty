@@ -31,7 +31,11 @@ class CeltyClient(JSONReceiver):
 
     def command(self, data):
         try:
-            out = celty.call(self.client, data["command"], *data.get("args", []))
+            args = data.get("args", [])
+            if isinstance(args, list):
+                out = celty.call(self.client, data["command"], *args)
+            elif isinstance(args, dict):
+                out = celty.call(self.client, data["command"], **args)
         except celty.CommandNotRegisteredError:
             out = {"type": "error",
                    "error": "command not registered", }

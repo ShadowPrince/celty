@@ -1,6 +1,6 @@
 webhelmet = {
     _label: function (text) {
-        return "<span>" + text + "</span>";
+        return "<span>" + text.replace(/\n/g, "<br />") + "</span>";
     },
 
     _input: function (name, value) {
@@ -50,6 +50,7 @@ webhelmet = {
                 data[k] = $("#helmet_" + k).val();
             }
 
+            $("#helmet_title").html($(this).attr("data-cmd"));
             webhelmet.submit({
                 command: $(this).attr("data-cmd"),
                 args: data,

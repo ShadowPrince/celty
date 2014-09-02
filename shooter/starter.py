@@ -11,8 +11,8 @@ def to_dict(fn):
 
 @to_dict
 def get_stamps():
-    for path, dirs, files in os.walk("."):
-        for f in filter(lambda x: not x.startswith("."), files):
+    for path, dirs, files in os.walk("./celty"):
+        for f in filter(lambda x: not x.startswith(".") and not x.endswith("pyc") and not x.endswith("pyo"), files):
             fp = os.path.join(path, f)
             yield fp, os.path.getmtime(fp)
 
@@ -34,7 +34,7 @@ while True:
             print("============================== Changes made, restarting server... ========================")
             p = start()
 
-        time.sleep(3)
+        time.sleep(1)
     except:
         p.terminate()
         break

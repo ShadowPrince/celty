@@ -9,9 +9,8 @@ if __name__ == "__main__":
 
     print("--------------------modules-loading-log:----------------")
     celty.register_module("celty")
-    celty.register_module("dtc")
     celty.register_module("shell")
-    celty.register_module("systemd")
+    celty.register_module("system")
     print("--------------------------------------------------------")
 
     env = ui.init()

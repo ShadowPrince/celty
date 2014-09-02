@@ -9,7 +9,6 @@ html {
 }
 
 .celty_command {
-    color: white;
     text-decoration: underline;
 }
 
@@ -24,12 +23,17 @@ div.block {
     color: grey;
 }
 
+div.block .key {
+    background: white;
+    color: black;
+}
+
 div.state {
     float: right;
     border: 3px solid #aaa;
 }
 
-div div {
+div.block pre {
     color: #eee;
 }
 
@@ -38,8 +42,25 @@ div div {
     width: 45%;
 }
 
-#helmet_render {
+#widgets pre {
+    word-wrap: break-word;
+    margin: 0;
+}
+
+#ui {
     width: 50%;
     border: solid;
     float: right;
+    color: #eee;
+}
+
+#ui .title {
+    color: black;
+    background: white;
+    text-align: right;
+}
+
+#helmet_render span {
+    white-space: pre;
+    word-wrap: break-word;
 }
