@@ -1,10 +1,11 @@
-html {
+body {
     color: #333;
     background: black;
+    padding: 0;
+    margin: 0;
 }
 
 .float-container {
-    width: 100%;
     overflow: auto;
 }
 
@@ -15,6 +16,10 @@ html {
 div.wrapper {
     margin: auto;
     max-width: 960px;
+}
+
+.container {
+    margin: 0 3px 0 3px;
 }
 
 div.block {
@@ -30,18 +35,29 @@ div.block .key {
     color: #2c4663;
 }
 
-div.state {
+.header {
+    margin-bottom: 1em;
+    background: #070c08;
+    border-bottom: 1px solid #fff977;
+    border-left: 1px solid #fff977;
+    border-right: 1px solid #fff977;
+    border-radius: 0 0 5px 5px;
+    padding: .2em .5em .5em .5em;
+}
+
+.state {
+    color: #555;
     float: right;
     text-align: right;
 }
 
 .state #connection {
-    border: 3px solid #111;
+    border: 3px solid #090909;
     border-radius: 3px;
     float: right;
 }
 
-div.logo {
+.logo {
     float: left;
     color: #fff977;
     font-size: 2em;
@@ -62,14 +78,13 @@ div.logo {
     color: #eee;
     word-wrap: break-word;
     margin: 0;
-    background: #070c08;
-    border: 1px solid #070c08;
+    background: #090909;
+    border: 1px solid #111;
     border-radius: 3px;
 }
 
 #ui {
     float: left;
-    margin-left: 10px;
     width: 470px;
     border: solid #fff977;
     color: #eee;
@@ -88,19 +103,38 @@ div.logo {
     float: left;
     background: #2c4663;
     color: white;
-    border: 1px solid white;
+    border: 2px solid white;
     padding: 2px;
     border-radius: 3px;
     margin-bottom: 2px;
 }
 
 #helmet_render {
-    border: 1px solid #070c08;
+    border: 1px solid #111;
     border-radius: 3px;
-    background: #070c08;
+    background: #090909;
 }
 
 #helmet_render span {
     white-space: pre;
     word-wrap: break-word;
+}
+
+#helmet_render input {
+    background: #2c4663;
+    color: white;
+    border: 2px solid white;
+    padding: 2px;
+    border-radius: 3px;
+}
+
+#helmet_render input[type=button] {
+    background: #2c4663;
+    color: white;
+    border-top: 2px solid white;
+    border-left: 2px solid white;
+    border-right: 2px solid #555;
+    border-bottom: 2px solid #555;
+    padding: 2px;
+    border-radius: 3px;
 }

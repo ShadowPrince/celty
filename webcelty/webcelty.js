@@ -6,9 +6,10 @@ var webcelty = function webcelty(url, token) {
     $(".state #addr").html(url);
 
     this._register_handlers();
+    this.helmet = new webhelmet();
 
     var that = this;
-    webhelmet.submit = function (data) {
+    this.helmet.submit = function (data) {
         that.command(data.command, data.args);
     };
 };
@@ -111,16 +112,19 @@ webcelty.prototype = {
             case "widgets":
                 for (var key in r.data) {
                     text = r.data[key].join("\n");
-                    key = key.replace(/:/g, "_");
-                    if ($("#" + key).length) {
-                        $("#" + key).html(text);
+                    html_key = key.replace(/:/g, "_");
+                    if ($("#" + html_key).length) {
+                        $("#" + html_key).html(text);
                     } else {
-                        $("#widgets").append('<div class="block"><div class="key">'+key+'</div><pre id="' + key + '">'+text+'</pre></div>');
+                        $("#widgets").append('<div class="block"><div class="key">'+key+'</div><pre id="' + html_key + '">'+text+'</pre></div>');
                     }
                 }
                 break;
             case "ui":
-                webhelmet.renderJSON(r.data, $("#helmet_render"));
+                this.helmet.renderJSON(r.data, $("#helmet_render"));
+                break;
+            case "ui_update":
+                this.helmet.updateByJSON(r.data);
                 break;
             case "error":
                 alert(r.error);

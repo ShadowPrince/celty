@@ -37,15 +37,3 @@ def widget(name=None, ns=None, timeout=3):
         return x
 
     return cb
-
-
-def ui(_name=None, ns=None, main_menu=False):
-    def decorator(fn):
-        @command(_name, ns, main_menu)
-        @wraps(fn)
-        def wrapper(*args, **kwargs):
-            return {"type": "ui",
-                    "data": fn(*args, **kwargs)}
-
-        return wrapper
-    return decorator

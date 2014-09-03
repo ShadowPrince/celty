@@ -39,6 +39,10 @@ def errorlines(err):
                 yield "  " + str(e)
 
 
+def errortext(err):
+    return "\n".join(errorlines(err))
+
+
 def not_empty():
     def check(x):
         if not len(x):

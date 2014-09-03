@@ -1,4 +1,4 @@
-from helmet import elements
+from helmet import elements as els
 import helmet
 
 from celty.modules import api
@@ -33,14 +33,26 @@ def widgets(c, s):
     return data
 
 
-@api.ui()
+@api.command(main_menu="my storage")
+@helmet.pack()
+def storage(c, s):
+    items = []
+    for k, s in c.storages.items():
+        items.append([els.label("   == {} ==".format(k))])
+        for kv in s.__dict__.items():
+            items.append([els.label("{}: {}".format(*kv))])
+
+    return items
+
+
+@api.command()
 @helmet.pack()
 def main(c, s):
-    menu = [[elements.button(*x)] for x in celty._main_menu]
-    return [[elements.label(*["celty main menu", "pick something:"]), ], ] + menu
+    menu = [[els.button(*x)] for x in celty._main_menu]
+    return [[els.label(*["celty main menu", "pick something:"]), ], ] + menu
 
 
 @api.widget(timeout=1)
-def celty_status(c, s):
+def status(c, s):
     return ["celty {}, clients: {}".format("0.1", len(celty.get_connected())),
             "commands: {}, widgets: {}".format(len(celty._commands), len(celty._widgets)), ]

@@ -1,9 +1,13 @@
 
 
 def label(*lines, **kwargs):
-    return {"type": "label",
-            "name": kwargs.get("name"),
-            "text": "\n".join(lines), }
+    """
+        max_lines: integer (client-side),
+    """
+    kwargs.update({
+        "type": "label",
+        "text": "\n".join(lines), })
+    return kwargs
 
 
 def input(name, value=None):

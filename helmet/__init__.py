@@ -7,26 +7,32 @@ def pack(skip_grab_check=False, *args):
         @wraps(fn)
         def wrapper(*args, **kwargs):
             result = fn(*args, **kwargs)
+
+            if isinstance(result, dict):
+                return result
+
             names = [el.get("name", None) for el in chain(*result)]
 
             for i, el in enumerate(chain(*result)) if not skip_grab_check else []:
                 for name in el.get("grab", []):
                     if name not in names:
-                        raise RuntimeError("Element {} can't grab '{}' - no such name!".format(el["name"] or "#"+str(i), name))
-            return result
+                        raise ValueError("Element {} can't grab '{}' - no such name!".format(el["name"] or "#"+str(i), name))
+            return {"type": "ui", 
+                    "data": result, }
         return wrapper
 
     return decorator
 
-def x():
-    import elements as els
-    import check
-    button = els.button("x", "c", ("a", ))
-    data, err = check.check(button, 
-        {"a": [
-            lambda x: int(x, 16) and None,
-        ]},
-        {"a": [lambda x: int(x, 16) ]},
-        {"a": "10"})
 
-    print(data, err)
+def set(**kwargs):
+    return kwargs
+
+
+def append(**kwargs):
+    kwargs.update({"__method": "append", })
+    return kwargs
+
+
+def update(**kwargs):
+    return {"type": "ui_update",
+            "data": kwargs, }
