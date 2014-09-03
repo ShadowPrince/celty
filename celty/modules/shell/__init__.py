@@ -14,21 +14,21 @@ def execute(*args):
         return str(e)
 
 
-def auth(c):
-    c.history = []
+def auth(c, s):
+    s.history = []
 
 
 @api.ui(main_menu="shell")
 @helmet.pack()
-def main(c, sh=None):
+def main(c, s, sh=None):
     if sh:
         out = execute(*sh.split())
     else:
         out = ""
 
-    c.history.append("$ " + str(sh))
-    c.history += out.splitlines()
-    out = c.history[-50:]
+    s.history.append("$ " + str(sh))
+    s.history += out.splitlines()
+    out = s.history[-50:]
 
     return ([els.label(*out)],
             [els.input("sh"), els.button("exec", "shell:main", ("sh", )), ])

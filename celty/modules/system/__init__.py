@@ -10,15 +10,15 @@ from subprocess import check_output
 FIELDS="pcpu,pmem,pid,user,args".split(",")
 
 
-def auth(c):
-    c.lines = 7
-    c.fields = "pcpu,pmem,pid,user,args"
-    c.sort = "pcpu"
+def auth(c, s):
+    s.lines = 7
+    s.fields = "pcpu,pmem,pid,user,args"
+    s.sort = "pcpu"
 
 
 @api.ui(main_menu="configure system module")
 @helmet.pack()
-def configure(c, **data):
+def configure(c, s, **data):
     submit = els.button("save", "system:configure", ("lines", "fields", "sort"))
 
     cdata, err = check.check(
@@ -37,13 +37,13 @@ def configure(c, **data):
                 }, )
 
     if not err:
-        c.lines = cdata["lines"]
-        c.fields = cdata["fields"]
-        c.sort = cdata["sort"]
+        s.lines = cdata["lines"]
+        s.fields = cdata["fields"]
+        s.sort = cdata["sort"]
     elif not data:
-        data = {"lines": c.lines,
-                "fields": c.fields,
-                "sort": c.sort, }
+        data = {"lines": s.lines,
+                "fields": s.fields,
+                "sort": s.sort, }
 
     return ([els.label(*check.errorlines(err)), ],
             [els.label("lines to show: "), els.input("lines", data["lines"])],
@@ -53,20 +53,20 @@ def configure(c, **data):
 
 
 @api.widget()
-def uptime(c):
+def uptime(c, s):
     return [(check_output("uptime").decode("utf-8").strip()), ]
 
 
 @api.command()
-def refresh_ps(c):
+def refresh_ps(c, s):
     celty.reset_widget_time(c, "system:ps")
 
 
 @api.widget(timeout=3)
-def ps(c):
+def ps(c, s):
     top = check_output((
         "sh",
-        "-c", "ps -eo {} | sort -k {} -r".format(c.fields, c.fields.split(",").index(c.sort) + 1)))
-    out = top.decode("utf-8").strip().splitlines()[:c.lines]
+        "-c", "ps -eo {} | sort -k {} -r".format(s.fields, s.fields.split(",").index(s.sort) + 1)))
+    out = top.decode("utf-8").strip().splitlines()[:s.lines]
 
     return out

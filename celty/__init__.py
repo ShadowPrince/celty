@@ -1,4 +1,4 @@
-from log import e, i
+from celty.log import e, i
 import time
 
 
@@ -23,17 +23,30 @@ class CommandWrongUsageError(Exception):
     pass
 
 
+class ClientStorage:
+    pass
+
+
 class Client:
     def __init__(self, protocol):
         self.widgets = dict([(n, {"last_time": 0}) for n in (x["name"] for x in _widgets.values())])
         self.subscriptions = {}
         self.proto = protocol
+        self.storages = {}
 
     def subscribe(self, cmd, *args, **kwargs):
         self.subscriptions[cmd] = (args, kwargs, )
 
     def unsubscribe(self, cmd):
         del self.subscriptions[cmd]
+
+    def storage_for(self, m):
+        if m in self.storages:
+            return self.storages[m]
+        else:
+            o = ClientStorage()
+            self.storages[m] = o
+            return o
 
 
 def register_command(name, fn, namespace=None, main_menu=False):
@@ -65,6 +78,7 @@ def register_module(module_name):
 def setup_module(module):
     for k, v in {
         "name": lambda x: x.__name__.split(".")[-1],
+        "_": lambda x: x.__package__,
     }.items():
         try:
             getattr(module, k)
@@ -83,12 +97,13 @@ def updated_widgets(c):
 
         if copts["last_time"] + opts["timeout"] < time.time():
             c.widgets[opts["name"]]["last_time"] = time.time()
-            yield opts["name"], fn(c)
+            yield opts["name"], fn(c, c.storage_for(fn.__module__))
 
 
 def call(cl, name, *args, **kwargs):
     try:
-        return _commands[name](cl, *args, **kwargs)
+        fn = _commands[name]
+        return fn(cl, cl.storage_for(fn.__module__), *args, **kwargs)
     #@TODO: except invalid arguments number TypeError 
     except KeyError:
         raise CommandNotRegisteredError(name)
@@ -105,7 +120,7 @@ def auth(protocol, token):
         cl = Client(protocol)
         for m in _modules.values():
             if hasattr(m, "auth"):
-                m.auth(cl)
+                m.auth(cl, cl.storage_for(m.__name__))
 
         return cl
     else:

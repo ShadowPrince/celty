@@ -6,9 +6,9 @@ import celty
 
 
 @api.command()
-def subscribe(*args, **kwargs):
+def subscribe(c, s, *args, **kwargs):
     try:
-        celty.subscribe(*args, **kwargs)
+        celty.subscribe(c, *args, **kwargs)
         return {"type": "subscribe",
                 "result": "success", }
     except celty.CommandNotRegisteredError:
@@ -18,14 +18,14 @@ def subscribe(*args, **kwargs):
 
 
 @api.command()
-def unsubscribe(c, command):
+def unsubscribe(c, s, command):
     celty.unsubscribe(c, command)
     return {"type": "unsubscribe",
             "result": "success", }
 
 
 @api.command()
-def widgets(c):
+def widgets(c, s):
     data = {"type": "widgets", "data": {}}
     for name, out in celty.updated_widgets(c):
         data["data"][name] = out
@@ -35,12 +35,12 @@ def widgets(c):
 
 @api.ui()
 @helmet.pack()
-def main(c):
+def main(c, s):
     menu = [[elements.button(*x)] for x in celty._main_menu]
     return [[elements.label(*["celty main menu", "pick something:"]), ], ] + menu
 
 
 @api.widget(timeout=1)
-def celty_status(c):
+def celty_status(c, s):
     return ["celty {}, clients: {}".format("0.1", len(celty.get_connected())),
             "commands: {}, widgets: {}".format(len(celty._commands), len(celty._widgets)), ]
