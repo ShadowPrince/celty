@@ -49,7 +49,7 @@ def storage(c, s):
 @helmet.pack()
 def main(c, s):
     menu = [[els.button(*x)] for x in celty._main_menu]
-    return [[els.label(*["celty main menu", "pick something:"]), ], ] + menu
+    return menu
 
 
 @api.widget(timeout=1)
