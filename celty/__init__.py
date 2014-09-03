@@ -56,9 +56,10 @@ def register_command(name, fn, namespace=None, main_menu=False):
         _main_menu.append([main_menu, fullname])
 
 
-def register_widget(fn, name=None, timeout=1000, *args):
+def register_widget(fn, name=None, namespace=None, timeout=1000, *args):
+    fullname = "{}{}".format(namespace+":" if namespace else "", name)
     _widgets[fn] = {
-        "name": fn.__name__ if not name else name,
+        "name": fullname,
         "priority": args[0] if len(args) > 0 else 0,
         "timeout": timeout,
         "last_time": 0,

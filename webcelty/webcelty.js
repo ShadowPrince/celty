@@ -11,7 +11,7 @@ var webcelty = function webcelty(url, token) {
     webhelmet.submit = function (data) {
         that.command(data.command, data.args);
     };
-}
+};
 
 webcelty.prototype = {
     ready: function () {},
@@ -111,10 +111,11 @@ webcelty.prototype = {
             case "widgets":
                 for (var key in r.data) {
                     text = r.data[key].join("\n");
+                    key = key.replace(/:/g, "_");
                     if ($("#" + key).length) {
                         $("#" + key).html(text);
                     } else {
-                        $("#widgets").append('<div class="block"><div class="key">'+key+':</div><pre id="' + key + '">'+text+'</pre></div>');
+                        $("#widgets").append('<div class="block"><div class="key">'+key+'</div><pre id="' + key + '">'+text+'</pre></div>');
                     }
                 }
                 break;
