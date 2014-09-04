@@ -1,6 +1,9 @@
 from functools import wraps
 
 
+RESERVED_NAMES = ["c", "s", ]
+
+
 def element(t=None):
     def decorator(fn):
         if not t:
@@ -14,6 +17,10 @@ def element(t=None):
 
             if "name" not in result:
                 result["name"] = kwargs.get("name")
+
+            if result["name"] in RESERVED_NAMES:
+                raise ValueError("{} is in reserved names({}), so you can't use it!".format(result["name"], RESERVED_NAMES))
+
             if "type" not in result:
                 result["type"] = _t
 
