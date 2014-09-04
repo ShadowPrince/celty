@@ -2,6 +2,7 @@ var webcelty = function webcelty(url, token) {
     this.sock = new SockJS(url);
     this.token = token;
     this.url = url;
+    this.connect_attempt = 1;
 
     $(".state #addr").html(url);
 
@@ -21,6 +22,7 @@ webcelty.prototype = {
         var that = this;
         this.sock.onopen = function() {
             that.auth_request(that.token);
+            that.connect_attempt = 1;
         };
 
         this.sock.onmessage = function(e) {
@@ -28,8 +30,9 @@ webcelty.prototype = {
         };
 
         this.sock.onclose = function() {
-            that.show_state("not connected", "red");
+            that.show_state("not connected (attempt "+that.connect_attempt+")", "red");
             setTimeout(function () {
+                that.connect_attempt++;
                 that.sock = new SockJS(that.url);
                 that._register_handlers();
             }, 1000);
@@ -148,7 +151,7 @@ webcelty.prototype = {
 $(document).ready(function () {
     c = new webcelty("http://127.0.0.1:23589", "1");
     c.ready = function () {
-        //this.subscribe("celty:widgets");
+        this.subscribe("celty:widgets");
         this.command("celty:main");
     };
 
