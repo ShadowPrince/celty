@@ -1,0 +1,30 @@
+.header {
+    margin-bottom: 1em;
+    background: #070c08;
+    border-bottom: 1px solid #fff977;
+    border-radius: 0 0 5px 5px;
+    padding: .2em .5em .5em .5em;
+}
+
+.header .state {
+    color: #555;
+    float: right;
+    text-align: right;
+}
+
+.header .state #connection {
+    border: 3px solid #090909;
+    border-radius: 3px;
+    float: right;
+}
+
+.header .logo {
+    float: left;
+    color: #fff977;
+    font-size: 2em;
+}
+
+.header .logo .version {
+    color: grey;
+    font-size: 0.4em;
+}

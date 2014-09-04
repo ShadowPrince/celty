@@ -116,7 +116,7 @@ webcelty.prototype = {
                     if ($("#" + html_key).length) {
                         $("#" + html_key).html(text);
                     } else {
-                        $("#widgets").append('<div class="block"><div class="key">'+key+'</div><pre id="' + html_key + '">'+text+'</pre></div>');
+                        $("#widgets").append('<div class="widget"><div class="title">'+key+'</div><pre id="' + html_key + '">'+text+'</pre></div>');
                     }
                 }
                 break;

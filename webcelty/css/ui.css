@@ -1,0 +1,63 @@
+#ui {
+    float: left;
+    width: 470px;
+
+    border: solid #fff977;
+    border-radius: 3px;
+
+    color: #eee;
+    background: #fff977;
+}
+
+#ui .title {
+    text-align: right;
+
+    color: #000;
+    background: #fff977;
+}
+
+#ui #back_command {
+    text-decoration: none;
+
+    float: left;
+    padding: 2px;
+    margin-bottom: 2px;
+
+    border-radius: 3px;
+
+    background: #2c4663;
+    color: white;
+}
+
+#helmet_render {
+    border: 1px solid #111;
+    border-radius: 3px;
+
+    background: #090909;
+}
+
+#helmet_render span {
+    white-space: pre;
+    word-wrap: break-word;
+}
+
+#helmet_render input {
+    padding: 2px;
+
+    background: #2c4663;
+    color: white;
+
+    border: 1px solid white;
+    border-radius: 3px;
+}
+
+#helmet_render input[type=button] {
+    padding: 2px;
+
+    background: #2c4663;
+    color: white;
+
+    border: 1px solid;
+    border-color: white #555 #555 white;
+    border-radius: 3px;
+}
