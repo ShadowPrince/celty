@@ -14,7 +14,12 @@ def command(name=None, ns=None, main_menu=False):
         else:
             _ns = ns
 
-        celty.register_command(_name, x, namespace=_ns, main_menu=main_menu)
+        if isinstance(main_menu, bool) and main_menu == True:
+            _main_menu = _name
+        else:
+            _main_menu = main_menu
+
+        celty.register_command(_name, x, namespace=_ns, main_menu=_main_menu)
         return x
 
     return cb

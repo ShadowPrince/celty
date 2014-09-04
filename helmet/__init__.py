@@ -2,7 +2,7 @@ from functools import wraps
 from itertools import chain
 
 
-def pack(skip_grab_check=False, *args):
+def pack(subscribe=False, skip_grab_check=False, *args):
     def decorator(fn):
         @wraps(fn)
         def wrapper(*args, **kwargs):
@@ -18,10 +18,16 @@ def pack(skip_grab_check=False, *args):
                     if name not in names:
                         raise ValueError("Element {} can't grab '{}' - no such name!".format(el["name"] or "#"+str(i), name))
             return {"type": "ui", 
+                    "subscribe": subscribe,
                     "data": result, }
         return wrapper
 
     return decorator
+
+
+def update(**kwargs):
+    return {"type": "ui_update",
+            "data": kwargs, }
 
 
 def set(**kwargs):
@@ -31,8 +37,3 @@ def set(**kwargs):
 def append(**kwargs):
     kwargs.update({"__method": "append", })
     return kwargs
-
-
-def update(**kwargs):
-    return {"type": "ui_update",
-            "data": kwargs, }

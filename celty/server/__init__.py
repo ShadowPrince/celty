@@ -23,7 +23,7 @@ def init():
     i("Started twisted server at {}:{}", "localhost", PORT)
 
     loop = task.LoopingCall(celtyLoop)
-    loop.start(1)
+    loop.start(0.3)
 
 
 def loop(state):

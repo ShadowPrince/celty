@@ -73,7 +73,7 @@ webcelty.prototype = {
     },
 
     subscribe: function () {
-        $("#subscriptions").append("<li id=\""+arguments[0]+"\">" + arguments[0] + "</li>");
+        console.log("webcelty: subscribed to " + arguments[0]);
 
         this._send({
             command: "celty:subscribe",
@@ -82,7 +82,7 @@ webcelty.prototype = {
     },
 
     unsubscribe: function () {
-        $("#subscriptions #" + arguments[0]).remove();
+        console.log("webcelty: unsubscribed from " + arguments[0]);
 
         this._send({
             command: "celty:unsubscribe",
@@ -121,6 +121,16 @@ webcelty.prototype = {
                 }
                 break;
             case "ui":
+                if (this.ui_sub) {
+                    this.unsubscribe(this.ui_sub);
+                    this.ui_sub = undefined;
+                }
+
+                if (r.subscribe) {
+                    this.ui_sub = r.subscribe;
+                    this.subscribe(this.ui_sub);
+                }
+
                 this.helmet.renderJSON(r.data, $("#helmet_render"));
                 break;
             case "ui_update":
@@ -138,7 +148,7 @@ webcelty.prototype = {
 $(document).ready(function () {
     c = new webcelty("http://127.0.0.1:23589", "1");
     c.ready = function () {
-        this.subscribe("celty:widgets");
+        //this.subscribe("celty:widgets");
         this.command("celty:main");
     };
 

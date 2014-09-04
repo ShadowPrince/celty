@@ -6,7 +6,7 @@ from celty.modules import api
 import subprocess
 
 
-def execute(*args):
+def _execute(*args):
     try:
         return subprocess.check_output(["sh", "-c", " ".join(args)]).decode("utf-8")
     except IndexError:
@@ -49,16 +49,16 @@ def configure(c, s, **data):
 
 
 @api.command(main_menu="shell")
-@helmet.pack()
+@helmet.pack(subscribe="shell:u_main")
 def main(c, s, sh=None):
     if sh:
-        out = execute(*sh.split())
+        out = _execute(*sh.split())
         s.history.append("$ " + str(sh))
         s.history += out.splitlines()
 
         if len(s.history) > s.history_lines:
             s.history = s.history[-s.history_lines:]
-
+        
         return helmet.update(
                 history=helmet.append(text="$ {}\n{}".format(sh, out)),
                 sh=helmet.set(value=""))

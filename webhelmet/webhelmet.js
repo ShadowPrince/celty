@@ -23,6 +23,21 @@ webhelmet.prototype = {
         return "<input class=\"helmet_submit\" "+id+" type=\"button\" value=\""+caption+"\" data-cmd=\""+cmd+"\" data-grab=\""+grab+"\" />";
     },
 
+    _progressbar: function (name, percent) {
+        return "<div id=\"helmet_"+name+"\" class=\"helmet_progressbar\" style=\"width: "+percent+"%;\">&nbsp;</div>";
+    },
+
+    _select: function (name, options, selected) {
+        var c = "<select id=\"helmet_" + name + "\">";
+        for (var k in options) {
+            var selected = " selected" ? selected == k : "";
+            c += "<option value=\""+k+"\""+selected+">"+options[k]+"</option>";
+        }
+        c += "</select>";
+        return c;
+    },
+
+
     renderJSON: function(markup, $to) {
         $to.html("");
 
@@ -48,6 +63,12 @@ webhelmet.prototype = {
                         break;
                     case "button":
                         c += this._button(el.name, el.caption, el.command, el.grab);
+                        break;
+                    case "progressbar":
+                        c += this._progressbar(el.name, el.progress);
+                        break;
+                    case "select":
+                        c += this._select(el.name, el.choices, el.selected);
                         break;
                 }
                 //c += "</td>";
@@ -90,7 +111,16 @@ webhelmet.prototype = {
                         }
                         break;
                     case "button":
-                        $el.attr(k, value);
+                        switch (k) {
+                            case "caption": $el.val(value); break;
+                            default: $el.attr(k, value); break;
+                        }
+                        break;
+                    case "progressbar":
+                        if (k == "progress")
+                            $el.css("width", value+"%");
+                        else
+                            console.error("updated: progressbar update key " + k + " ignored")
                         break;
                     case "label": 
                         switch (k) {

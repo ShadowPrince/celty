@@ -11,6 +11,7 @@ if __name__ == "__main__":
     celty.register_module("celty")
     celty.register_module("shell")
     celty.register_module("system")
+    celty.register_module("dtc")
     print("--------------------------------------------------------")
 
     env = ui.init()

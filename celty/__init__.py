@@ -38,7 +38,10 @@ class Client:
         self.subscriptions[cmd] = (args, kwargs, )
 
     def unsubscribe(self, cmd):
-        del self.subscriptions[cmd]
+        try:
+            del self.subscriptions[cmd]
+        except KeyError:
+            pass
 
     def storage_for(self, m):
         if m in self.storages:
@@ -102,12 +105,8 @@ def updated_widgets(c):
 
 
 def call(cl, name, *args, **kwargs):
-    try:
-        fn = _commands[name]
-        return fn(cl, cl.storage_for(fn.__module__), *args, **kwargs)
-    #@TODO: except invalid arguments number TypeError 
-    except KeyError:
-        raise CommandNotRegisteredError(name)
+    fn = _commands[name]
+    return fn(cl, cl.storage_for(fn.__module__), *args, **kwargs)
 
 
 def process_subscriptions():
