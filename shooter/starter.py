@@ -11,7 +11,12 @@ def to_dict(fn):
 
 @to_dict
 def get_stamps():
-    for path, dirs, files in os.walk("./celty"):
+    dirs = ["./celty", "./helmet",]
+    for path, directories, files in os.walk("."):
+        if not list(filter(lambda x: x, [path.startswith(x) for x in dirs])):
+            continue
+
+
         for f in filter(lambda x: not x.startswith(".") and not x.endswith("pyc") and not x.endswith("pyo"), files):
             fp = os.path.join(path, f)
             yield fp, os.path.getmtime(fp)
