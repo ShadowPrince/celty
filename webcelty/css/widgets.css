@@ -1,0 +1,32 @@
+.widget {
+    margin-bottom: 10px;
+
+    border: 3px solid #fff977;
+    border-radius: 3px;
+
+    color: grey;
+    background: #fff977;
+}
+
+.widget .title {
+    background: #fff977;
+    color: #000;
+}
+
+.widget pre {
+    margin: 0;
+
+    border: 1px solid #111;
+    border-radius: 3px;
+
+    word-wrap: break-word;
+
+    color: #eee;
+    background: #090909;
+}
+
+#widgets {
+    float: left;
+    width: 470px;
+}
+
