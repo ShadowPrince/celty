@@ -1,9 +1,12 @@
+from functools import wraps
+
 import time
 import os
 import subprocess
 
 
 def to_dict(fn):
+    @wraps(fn)
     def wrapper(*args, **kwargs):
         return dict(fn(*args, **kwargs))
     return wrapper

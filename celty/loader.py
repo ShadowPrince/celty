@@ -1,5 +1,5 @@
 import celty
-from celty import server as ui
+from celty import server
 
 from log import e, i
 
@@ -16,7 +16,5 @@ if __name__ == "__main__":
             celty.register_module(dir)
     print("--------------------------------------------------------")
 
-    env = ui.init()
-
-    while True:
-        ui.loop(env)
+    server.init()
+    server.run()

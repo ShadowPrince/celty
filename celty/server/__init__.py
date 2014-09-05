@@ -1,6 +1,6 @@
 import celty
 from celty.log import e, i
-from celty.server.reactor import CeltyClient, CeltyFactory
+from celty.server.reactor import CeltyProtocol, CeltyFactory
 from txsockjs.factory import SockJSFactory
 
 import sys
@@ -14,19 +14,28 @@ datetimes = {}
 
 
 def celtyLoop():
+    """
+    Loop for subscriptions and stuff.
+    """
     celty.process_subscriptions()
 
 
 def init():
+    """
+    Init reactor and events.
+    """
     reactor.listenTCP(PORT+1, CeltyFactory())
-    reactor.listenTCP(PORT, SockJSFactory(Factory.forProtocol(CeltyClient)))
+    reactor.listenTCP(PORT, SockJSFactory(Factory.forProtocol(CeltyProtocol)))
     i("Started twisted server at {}:{}", "localhost", PORT)
 
+
+def run():
+    """
+    Run reactor.
+    """
     loop = task.LoopingCall(celtyLoop)
     loop.start(0.3)
 
-
-def loop(state):
     try:
         reactor.run()
     except error.ReactorNotRestartable:

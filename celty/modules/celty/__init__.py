@@ -8,7 +8,7 @@ import celty
 @api.command()
 def subscribe(c, s, *args, **kwargs):
     try:
-        celty.subscribe(c, *args, **kwargs)
+        c.subscribe(*args, **kwargs)
         return {"type": "subscribe",
                 "result": "success", }
     except celty.CommandNotRegisteredError:
@@ -19,7 +19,7 @@ def subscribe(c, s, *args, **kwargs):
 
 @api.command()
 def unsubscribe(c, s, command):
-    celty.unsubscribe(c, command)
+    c.unsubscribe(command)
     return {"type": "unsubscribe",
             "result": "success", }
 

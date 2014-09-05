@@ -3,6 +3,15 @@ import celty
 
 
 def command(name=None, ns=None, main_menu=False):
+    """
+    Decorator to register the command to celty.
+    If name is not presented - it'll be function's __name__.
+    If ns is not presented - it'll be function's __module__.
+
+    name -- name of command
+    ns -- namespace
+    main_menu -- if presented - register command to celty's main menu represented as this argument
+    """
     def cb(x):
         if not name:
             _name = x.__name__
@@ -26,6 +35,15 @@ def command(name=None, ns=None, main_menu=False):
 
 
 def widget(name=None, ns=None, timeout=3):
+    """
+    Decorator to register the widget to celty.
+    If name is not presented - it'll be function's __name__.
+    If ns is not presented - it'll be function's __module__.
+
+    name -- name of command
+    ns -- namespace
+    timeout -- time in seconds in which widget will be refreshed
+    """
     def cb(x):
         if not name:
             _name = x.__name__

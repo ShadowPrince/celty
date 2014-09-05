@@ -62,11 +62,6 @@ def uptime(c, s):
     return [(check_output("uptime").decode("utf-8").strip()), ]
 
 
-@api.command()
-def refresh_ps(c, s):
-    celty.reset_widget_time(c, "system:ps")
-
-
 @api.widget(timeout=3)
 def ps(c, s):
     top = check_output((
