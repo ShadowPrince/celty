@@ -1,3 +1,8 @@
+#widgets {
+    float: left;
+    max-width: 480px;
+}
+
 .widget {
     margin-bottom: 10px;
 
@@ -24,9 +29,3 @@
     color: #eee;
     background: #090909;
 }
-
-#widgets {
-    float: left;
-    width: 470px;
-}
-

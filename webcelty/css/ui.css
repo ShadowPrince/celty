@@ -1,6 +1,6 @@
 #ui {
     float: left;
-    width: 470px;
+    max-width: 480px;
 
     border: solid #fff977;
     border-radius: 3px;
