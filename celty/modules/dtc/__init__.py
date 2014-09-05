@@ -33,12 +33,10 @@ def test(c, s):
                 els.label("time to decide: "),
                 els.progressbar("p"),
             ], [
-                els.label("select button caption: "), 
+                els.label("select button caption: "),
                 els.select(
-                    "s", 
+                    "ss",
                     dict(AAA="I like AAA", BBB="BBB is better!"), selected="a")
             ], [
                 els.button("set caption!", "dtc:test_data", ("ss", ), name="b")
             ], )
-
-

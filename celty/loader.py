@@ -3,15 +3,17 @@ from celty import server as ui
 
 from log import e, i
 
+import os
+
 
 if __name__ == "__main__":
     print("celty 0.1")
 
     print("--------------------modules-loading-log:----------------")
-    celty.register_module("celty")
-    celty.register_module("shell")
-    celty.register_module("system")
-    celty.register_module("dtc")
+    base = os.path.join(os.path.dirname(__file__), "modules")
+    for dir in filter(lambda x: not x.startswith("__"), os.listdir(base)):
+        if os.path.isdir(os.path.join(base, dir)):
+            celty.register_module(dir)
     print("--------------------------------------------------------")
 
     env = ui.init()

@@ -24,7 +24,7 @@ webhelmet.prototype = {
     },
 
     _progressbar: function (name, percent) {
-        return "<div id=\"helmet_"+name+"\" class=\"helmet_progressbar\" style=\"width: "+percent+"%;\">&nbsp;</div>";
+        return "<div class=\"helmet_progressbar\"><div id=\"helmet_"+name+"\" style=\"width: "+percent+"%;\">&nbsp;</div></div>";
     },
 
     _select: function (name, options, selected) {
