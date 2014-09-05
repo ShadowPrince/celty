@@ -1,6 +1,6 @@
 # Celty
 
-Celty is server-kit for various tasks at dedicated server, like administration or assistance. Designed for devices lack of keyboard (goodbye, ssh) and screen space (goodbye, various panels), it offers unified modules for all-kind of platforms with GUI, all-over network connection.
+Celty is server-kit for various tasks at dedicated server, like administration or assistance. Designed for devices lack of keyboard (goodbye, ssh) and screen space (goodbye, various admin panels), it offers unified modules for all-kind of client platforms with GUI, over the network connection.
 
 ## Usage
 
