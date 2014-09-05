@@ -1,5 +1,5 @@
+import celty
 from celty.modules import api
-from celty.modules import celty
 
 import helmet
 from helmet import elements as els
@@ -15,7 +15,7 @@ def test_updater(c, s):
     if s.p > 100:
         s.p = 0
         # ain't fast enough!
-        return celty.main(c, s)
+        return celty.call("celty:main_menu")
 
     return helmet.update(p=helmet.set(progress=s.p))
 
@@ -23,6 +23,7 @@ def test_updater(c, s):
 @api.command()
 @helmet.updater()
 def test_data(c, s, ss):
+    s.p = 0
     return dict(b=helmet.set(caption=ss))
 
 

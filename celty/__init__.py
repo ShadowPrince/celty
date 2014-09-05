@@ -1,4 +1,6 @@
 from celty.log import e, i
+
+import importlib
 import time
 
 
@@ -133,9 +135,9 @@ def register_module(module_name):
     module_name -- string representing module_name
     """
     wgts, cmds = len(_widgets), len(_commands)
-    m = __import__("modules." + module_name)
+    module = importlib.import_module("modules." + module_name)
 
-    _modules[module.name] = m
+    _modules[module_name] = module
 
     wgts, cmds = len(_widgets) - wgts, len(_commands) - cmds
     i("{}: loaded {} commands and {} widgets", module_name, cmds, wgts)
@@ -198,7 +200,7 @@ def auth(protocol, token):
     """
     Auth client.
 
-    protocol -- CeltyProtocol
+    protocol -- instance of CeltyProtocol
     token -- string of token
     Returns Client if successfull or None
     """

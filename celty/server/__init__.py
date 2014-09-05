@@ -9,6 +9,7 @@ from twisted.internet.protocol import Factory
 
 
 PORT = 23589  # C-E-L-T-Y
+UPDATE_TIME = 0.3
 
 datetimes = {}
 
@@ -34,7 +35,7 @@ def run():
     Run reactor.
     """
     loop = task.LoopingCall(celtyLoop)
-    loop.start(0.3)
+    loop.start(UPDATE_TIME)
 
     try:
         reactor.run()
