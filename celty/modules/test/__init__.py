@@ -21,13 +21,13 @@ def test_updater(c, s):
 
 
 @api.command()
-@helmet.pack()
+@helmet.updater()
 def test_data(c, s, ss):
-    return helmet.update(b=helmet.set(caption=ss))
+    return dict(b=helmet.set(caption=ss))
 
 
 @api.command(main_menu=True)
-@helmet.pack(subscribe="dtc:test_updater")
+@helmet.ui(subscribe=test_updater)
 def test(c, s):
     return ([
                 els.label("time to decide: "),
@@ -38,5 +38,5 @@ def test(c, s):
                     "ss",
                     dict(AAA="I like AAA", BBB="BBB is better!"), selected="a")
             ], [
-                els.button("set caption!", "dtc:test_data", ("ss", ), name="b")
+                els.button("set caption!", test_data, ("ss", ), name="b")
             ], )

@@ -22,7 +22,7 @@ def auth(c, s):
 
 
 @api.command()
-@helmet.pack()
+@helmet.ui()
 def configure(c, s, **data):
     submit = els.button("save", "shell:configure", ("lines", ))
     cdata, err = ck.check(
@@ -49,7 +49,7 @@ def configure(c, s, **data):
 
 
 @api.command(main_menu="shell")
-@helmet.pack(subscribe="shell:u_main")
+@helmet.ui()
 def main(c, s, sh=None):
     if sh:
         out = _execute(*sh.split())

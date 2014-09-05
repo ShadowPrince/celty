@@ -2,6 +2,7 @@ import helmet
 from helmet import check as ck
 from helmet import elements as els
 
+import celty
 from celty.modules import api
 
 from subprocess import check_output
@@ -17,9 +18,9 @@ def auth(c, s):
 
 
 @api.command(main_menu="configure system module")
-@helmet.pack()
+@helmet.ui()
 def configure(c, s, **data):
-    submit = els.button("save", "system:configure", ("lines", "fields", "sort"))
+    submit = els.button("save", configure, ("lines", "fields", "sort"))
 
     cdata, err = ck.check(
             submit, 
@@ -27,7 +28,7 @@ def configure(c, s, **data):
             validators={
                 "fields": [
                     ck.not_empty(),
-                    lambda x: None if [True for a in x.split(",")] == [x in FIELDS for x in x.split(",")] else "invalid value!", 
+                    lambda x: None if [True for a in x.split(",")] == [x in FIELDS for x in x.split(",")] else "invalid value!",
                     ],
                 "lines": ck.integer(),
                 "sort": ck.value_in(FIELDS),

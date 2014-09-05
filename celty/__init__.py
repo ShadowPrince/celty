@@ -54,19 +54,21 @@ class Client:
 
 def register_command(name, fn, namespace=None, main_menu=False):
     fullname = "{}{}".format(namespace+":" if namespace else "", name)
-    _commands[fullname] = fn
-    if main_menu:
-        _main_menu.append([main_menu, fullname])
+    if fullname not in _commands:
+        _commands[fullname] = fn
+        if main_menu:
+            _main_menu.append([main_menu, fullname])
 
 
 def register_widget(fn, name=None, namespace=None, timeout=1000, *args):
     fullname = "{}{}".format(namespace+":" if namespace else "", name)
-    _widgets[fn] = {
-        "name": fullname,
-        "priority": args[0] if len(args) > 0 else 0,
-        "timeout": timeout,
-        "last_time": 0,
-    }
+    if fullname not in _widgets:
+        _widgets[fn] = {
+            "name": fullname,
+            "priority": args[0] if len(args) > 0 else 0,
+            "timeout": timeout,
+            "last_time": 0,
+        }
 
 
 def register_module(module_name):
@@ -77,6 +79,12 @@ def register_module(module_name):
 
     wgts, cmds = len(_widgets) - wgts, len(_commands) - cmds
     i("{}: loaded {} commands and {} widgets", module_name, cmds, wgts)
+
+
+def find_command(cmd):
+    for k, v in _commands.items():
+        if v == cmd:
+            return k
 
 
 def setup_module(module):

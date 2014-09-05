@@ -34,7 +34,7 @@ def widgets(c, s):
 
 
 @api.command(main_menu="my storage")
-@helmet.pack()
+@helmet.ui()
 def storage(c, s):
     items = []
     for k, s in c.storages.items():
@@ -46,7 +46,7 @@ def storage(c, s):
 
 
 @api.command()
-@helmet.pack()
+@helmet.ui()
 def main(c, s):
     menu = [[els.button(*x)] for x in celty._main_menu]
     return menu
