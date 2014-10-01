@@ -11,9 +11,10 @@ if __name__ == "__main__":
 
     print("--------------------modules-loading-log:----------------")
     base = os.path.join(os.path.dirname(__file__), "modules")
-    for dir in filter(lambda x: not x.startswith("__"), os.listdir(base)):
-        if os.path.isdir(os.path.join(base, dir)):
-            celty.register_module(dir)
+    for f in filter(lambda x: not x.startswith("__"), os.listdir(base)):
+        if os.path.isfile(os.path.join(base, f)):
+            f = ".".join(f.split(".")[:-1])
+        celty.register_module(f)
     print("--------------------------------------------------------")
 
     server.init()

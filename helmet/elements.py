@@ -82,7 +82,8 @@ def button(caption, command, grab=(), **kw):
     """
     return {"caption": caption,
             "command": command,
-            "grab": grab, }
+            "grab": grab,
+            "args": kw.get('args', {}), }
 
 
 @element()

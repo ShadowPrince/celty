@@ -2,7 +2,7 @@ from functools import wraps
 import celty
 
 
-def command(name=None, ns=None, main_menu=False):
+def command(name=None, ns=None, main_menu=False, inline=False):
     """
     Decorator to register the command to celty.
     If name is not presented - it'll be function's __name__.
@@ -28,7 +28,7 @@ def command(name=None, ns=None, main_menu=False):
         else:
             _main_menu = main_menu
 
-        celty.register_command(_name, x, namespace=_ns, main_menu=_main_menu)
+        celty.register_command(_name, x, namespace=_ns, main_menu=_main_menu, inline=inline)
         return x
 
     return cb
@@ -60,3 +60,15 @@ def widget(name=None, ns=None, timeout=3):
         return x
 
     return cb
+
+def inline(*args, **kwargs):
+    """
+    Decorator to register inline command to celty. Wrapper around api.command decorator, used for one-time inline defined commands.
+    If name is not presented - it'll be function's __name__.
+    If ns is not presented - it'll be function's __module__.
+
+    name -- name of command
+    ns -- namespace
+    main_menu -- if presented - register command to celty's main menu represented as this argument
+    """
+    return command(*args, inline=True, **kwargs)

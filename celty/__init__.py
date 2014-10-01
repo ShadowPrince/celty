@@ -33,9 +33,18 @@ class CommandWrongUsageError(Exception):
 
 class ClientStorage:
     """
-    Empty class for module per-client storage.
+    Class for module per-client storage.
     """
-    pass
+
+    def default(self, **kwargs):
+        """
+        Set default value for keys (actually it sets only if there is no such key)
+
+        kwargs -- dict of key => value to set with setattr
+        """
+        for k, v in kwargs.items():
+            if not hasattr(self, k):
+                setattr(self, k, v)
 
 
 class Client:
@@ -92,7 +101,7 @@ class Client:
             return o
 
 
-def register_command(name, fn, namespace=None, main_menu=False):
+def register_command(name, fn, namespace=None, main_menu=False, inline=False):
     """
     Register command to celty.
 
@@ -106,8 +115,8 @@ def register_command(name, fn, namespace=None, main_menu=False):
     Raises CommandAlreadyRegisteredError.
     """
     fullname = "{}{}".format(namespace+":" if namespace else "", name)
-    if fullname not in _commands:
-        _commands[fullname] = fn
+    if fullname not in _commands or inline:
+        _commands[fullname] = {"fn": fn, "inline": inline, "module": fn.__module__, }
         if main_menu:
             _main_menu.append([main_menu, fullname])
     else:
@@ -170,7 +179,7 @@ def find_command(fn):
     Return command name.
     """
     for k, v in _commands.items():
-        if v == fn:
+        if v["fn"] == fn:
             return k
 
 
@@ -183,8 +192,11 @@ def call(cl, name, *args, **kwargs):
     args, kwargs -- args and kwargs used in function call
     Returns result of function call
     """
-    fn = _commands[name]
-    return fn(cl, cl.storage_for(fn.__module__), *args, **kwargs)
+    cmd = _commands[name]
+    if cmd["inline"]:
+        return cmd["fn"](*args, **kwargs)
+    else:
+        return cmd["fn"](cl, cl.storage_for(cmd["module"]), *args, **kwargs)
 
 
 def process_subscriptions():

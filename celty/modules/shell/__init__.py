@@ -16,9 +16,10 @@ def _execute(*args):
 
 
 def auth(c, s):
-    s.history = []
-    s.history_lines = 300
-    s.lines = 50
+    s.default(
+            history=[],
+            history_lines=300,
+            lines=50, )
 
 
 @api.command()

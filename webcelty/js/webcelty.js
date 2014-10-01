@@ -101,6 +101,8 @@ webcelty.prototype = {
     },
 
     dispatch: function (r) {
+        if (r == null)
+            return;
         switch (r.type) {
             case "auth":
                 if (r.result == "success") {

@@ -12,9 +12,10 @@ FIELDS="pcpu,pmem,pid,user,args".split(",")
 
 
 def auth(c, s):
-    s.lines = 7
-    s.fields = "pcpu,pmem,pid,user,args"
-    s.sort = "pcpu"
+    s.default(
+        lines=7,
+        fields="pcpu,pmem,pid,user,args",
+        sort="pcpu", )
 
 
 @api.command(main_menu="configure system module")
