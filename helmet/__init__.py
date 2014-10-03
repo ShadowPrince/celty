@@ -14,7 +14,12 @@ def prep_ui(layout, subscribe=False, skip_grab_check=False):
     if isinstance(layout, dict):
         return layout
 
-    names = [el.get("name", None) for el in chain(*layout)]
+    names = []
+    for i, el in enumerate(chain(*layout)):
+        if type(el) is not dict:
+            raise ValueError("Layout value {} is not an helmet element!".format(el));
+
+        names.append(el.get("name", None))
 
     for i, el in enumerate(chain(*layout)):
         for name in el.get("grab", []):
@@ -35,13 +40,24 @@ def prep_ui(layout, subscribe=False, skip_grab_check=False):
             "data": layout, }
 
 
-def update(**kwargs):
+def update(fb=None, **kwargs):
     """
     Prepare update query.
     Updates passed trough kwargs (element name => action).
 
+    Arguments:
+    fb - dict that represents framebuffer
+    kwargs - update actions dictionary
+
     Return celty dict with "ui_update" type, and "data" with update data.
     """
+    if fb:
+        for k, v in kwargs.items():
+            if fb.get(k, None) != v:
+                fb[k] = v
+            else:
+                del kwargs[k]
+
     return {"type": "ui_update",
             "data": kwargs, }
 

@@ -46,6 +46,12 @@ class ClientStorage:
             if not hasattr(self, k):
                 setattr(self, k, v)
 
+    def get_or_set(self, k, v):
+        if not hasattr(self, k):
+            setattr(self, k, v)
+
+        return getattr(self, k)
+
 
 class Client:
     """

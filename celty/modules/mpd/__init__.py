@@ -81,7 +81,7 @@ def mpd(c, s):
             control_pp=helmet.set(caption=_pp_char(status, True)),
         ))
 
-        return helmet.update(**update)
+        return helmet.update(s.get_or_set('mpd_fb', {}), **update)
 
     return [
         [els.label('['),
