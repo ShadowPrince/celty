@@ -22,7 +22,7 @@ class JSONReceiver(LineReceiver):
 
         data -- value to dump.
         """
-        self.sendLine(json.dumps(data).encode("utf-8"))
+        self.sendLine(json.dumps(data))
 
     def lineReceived(self, line):
         self.jsonReceived(json.loads(line.decode("utf-8")))

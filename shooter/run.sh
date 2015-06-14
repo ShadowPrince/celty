@@ -1,2 +1,2 @@
 export PYTHONPATH=.
-python2 ./shooter/starter.py
+python2.7 ./shooter/starter.py

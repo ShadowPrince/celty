@@ -26,7 +26,7 @@ def get_stamps():
 
 
 def start():
-    return subprocess.Popen(["python2", "./celty/loader.py"])
+    return subprocess.Popen(["python2.7", "./celty/loader.py"])
 
 stamps = get_stamps()
 p = start()

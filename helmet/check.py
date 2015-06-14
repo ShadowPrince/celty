@@ -22,6 +22,8 @@ def check(button, data, validators, translators):
                 val_result = v(value)
             except ValueError, e:
                 val_result = str(e)
+            except TypeError, e:
+                val_result = str(e)
 
             if val_result != None:
                 errlist = errors.get(k, [])
@@ -91,8 +93,11 @@ def value_in(range):
 def integer(base=10):
     """
     Validator. Check if value is integer with base = keyword argument "base".
+    @TODO: except raising and get error message
     """
     def check(x):
+        if type(x) == int:
+            return None
         int(x, base)
     return check
 
@@ -121,5 +126,7 @@ def to_integer(base=10):
     Translator. Translate value into int with base = keyword argument "base".
     """
     def tr(x):
+        if type(x) == int:
+            return x
         return int(x, base)
     return tr
