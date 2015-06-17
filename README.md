@@ -1,10 +1,10 @@
 # Celty
 
-Celty is server-kit for various tasks at dedicated server, like administration or assistance. Designed for devices lack of keyboard (goodbye, ssh) and screen space (goodbye, various admin panels), it offers unified modules for all-kind of client platforms with GUI, over the network connection.
+Celty is server-client-kit for dedicated server administration or monitoring. Designed for devices lacking keyboard (goodbye, ssh) and screen space (goodbye, various admin panels), it offers unified way to deal with various tasks for all-kind of client platforms.
 
 ## Usage
 
-Since Celty is an server-kit it's not usage by itself. But, since Celty is an server-kit, it can be powered with easy-to-write and connect modules, that can perform all kind of tasks. 
+Since Celty is an only server-kit it's not quite usefull by itself. But, since Celty is an server-kit, it can be powered with easy-to-write modules, that can perform all kind of tasks. 
 
 ## Modules
 
@@ -12,9 +12,8 @@ Module is a just python package placed in a right place. It can register widgets
 
 ## GUI
 
-The main goal was about moving GUI to server and creating an unified interface protocol over the network, so client developers don't has to implement GUI to every module, but implement one layout markup protocol named `helmet`. 
-
-Its just like a sweet combination of HTML and JavaScript, except for hugeness of HTML and complexity of JS. Overall transfer data is much smaller than a web site, and its not lacking that much of interactivity like mobile browsers (like OperaMini) do.
+The main goal was about moving GUI code to server and creating an unified and minimalistic iterface protocol over the network.
+It's just like a sweet combination of HTML and JavaScript, except for hugeness of HTML and complexity of JS. Overall transfer data is much smaller than a web site, and it's not lacking that much of interactivity like mobile browsers (like OperaMini) do.
 
 
 ## Kit parts
@@ -23,4 +22,8 @@ Its just like a sweet combination of HTML and JavaScript, except for hugeness of
 * shooter - help celty server to run
 * helmet - GUI layout markup library (server-side)
 * webhelmet - implementation of client-side helmet library in javascript
-* webcelty - basic implementation of client app in form of web app
+
+## Client apps
+
+* [webcelty](https://github.com/ShadowPrince/celty/tree/master/webcelty) - basic HTML/JS implementation using **webhelmet**
+* [iCelty](http://github.com/shadowprince/iCelty) - cocoa implementation
